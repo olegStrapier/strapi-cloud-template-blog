@@ -108,7 +108,7 @@ async function checkFileExistsBeforeUpload(files) {
     // Check if the file already exists in Strapi
     const fileWhereName = await strapi.query("plugin::upload.file").findOne({
       where: {
-        name: fileName.replace(/\..*$/, ''),
+        name: fileName.replace(/\..*$/, ""),
       },
     });
 
@@ -118,7 +118,7 @@ async function checkFileExistsBeforeUpload(files) {
     } else {
       // File doesn't exist, upload it
       const fileData = getFileData(fileName);
-      const fileNameNoExtension = fileName.split('.').shift()
+      const fileNameNoExtension = fileName.split(".").shift();
       const [file] = await uploadFile(fileData, fileNameNoExtension);
       uploadedFiles.push(file);
     }
@@ -178,7 +178,7 @@ async function importArticles() {
 
 async function importGlobal() {
   const favicon = await checkFileExistsBeforeUpload(["favicon.png"]);
-  const shareImage = await checkFileExistsBeforeUpload(["default-image.png"])
+  const shareImage = await checkFileExistsBeforeUpload(["default-image.png"]);
   return createEntry({
     model: "global",
     entry: {
@@ -188,8 +188,8 @@ async function importGlobal() {
       publishedAt: Date.now(),
       defaultSeo: {
         ...global.defaultSeo,
-        shareImage
-      }
+        shareImage,
+      },
     },
   });
 }
@@ -246,17 +246,4 @@ async function importSeedData() {
   await importAbout();
 }
 
-module.exports = async () => {
-  const shouldImportSeedData = await isFirstRun();
-
-  if (shouldImportSeedData) {
-    try {
-      console.log("Setting up the template...");
-      await importSeedData();
-      console.log("Ready to go");
-    } catch (error) {
-      console.log("Could not import seed data");
-      console.error(error);
-    }
-  }
-};
+module.exports = async () => {};
